@@ -1,4 +1,8 @@
-package PACKAGE_NAME;
+public class PostGUI
+{
+    private PostController controller = new PostController();
 
-public class PostGUI {
+    public String createPost(){
+        return controller.newPost
+    }
 }
