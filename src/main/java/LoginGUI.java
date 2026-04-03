@@ -5,8 +5,8 @@ public class LoginGUI {
     public static final int MIN_LENGTH_PWD = 8;
     public static final int MAX_LENGTH_PWD = 12;
 
-    public static char[] badChars = {' ', ',', '/', '\\'};
-    private AuthController authController = new AuthController();
+    public static char[] badChars = {' ', ',', '/', '\\', ' '};
+    private static AuthController authController = new AuthController();
 
     // username checks
 
@@ -39,7 +39,7 @@ public class LoginGUI {
         return false;
     }
 
-    public boolean checkLoginExisting(String username){
+    public static boolean checkLoginExisting(String username){
         // check if username exist in database, returns true
         if (authController.checkUserExist(username)) {
             return true;
@@ -78,7 +78,7 @@ public class LoginGUI {
         return( foundLetter && foundNumber && foundSpecialChar );
     }
 
-    public boolean passwordCheck(String username, String password){
+    public static boolean passwordCheck(String username, String password){
         // if username exist, this checks if password matches user credentials, if so login successful
         if (authController.checkPwdMatches(username, password)) {
             return true;
@@ -87,11 +87,11 @@ public class LoginGUI {
     }
 
     // login
-    public String login(String username, String password){
+    public static String login(String username, String password){
         if (!checkUsernameLength(username)){
             return "Username does not satisfy length requirement";
         }
-        if (!checkUsernameForBadCharacters(username)){
+        if (checkUsernameForBadCharacters(username)){
             return "Username contains invalid characters";
         }
         if (!checkLoginExisting(username)){
