@@ -6,6 +6,7 @@ public class LoginGUI {
     public static final int MAX_LENGTH_PWD = 12;
 
     public static char[] badChars = {' ', ',', '/', '\\'};
+    private AuthController authController = new AuthController();
 
     // username checks
 
@@ -38,9 +39,13 @@ public class LoginGUI {
         return false;
     }
 
-    public static boolean checkLoginExisting(String username){
-        // check if username exist in database, returns true if so
-        return true;
+    public boolean checkLoginExisting(String username){
+        // check if username exist in database, returns true
+        if (authController.checkUserExist(username)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // password checks
@@ -73,8 +78,35 @@ public class LoginGUI {
         return( foundLetter && foundNumber && foundSpecialChar );
     }
 
-    public static boolean loginSuccessful(String username, String password){
+    public boolean passwordCheck(String username, String password){
         // if username exist, this checks if password matches user credentials, if so login successful
-        return true;
+        if (authController.checkPwdMatches(username, password)) {
+            return true;
+        }
+        return false;
     }
+
+    // login
+    public String login(String username, String password){
+        if (!checkUsernameLength(username)){
+            return "Username does not satisfy length requirement";
+        }
+        if (!checkUsernameForBadCharacters(username)){
+            return "Username contains invalid characters";
+        }
+        if (!checkLoginExisting(username)){
+            return "Username does not exist";
+        }
+        if (!checkPwdLength(password)){
+            return "Password does not match length requirement";
+        }
+        if (!checkPwdForValidCharacters(password)){
+            return "Password contains invalid characters";
+        }
+        if (passwordCheck(username, password)){
+            return "Login successful";
+        }
+        return "Password does not match users";
+    }
+
 }
