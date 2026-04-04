@@ -27,6 +27,6 @@ public class User {
     }
 
     public boolean hasPost(String title){
-        posts.containsKey(title);
+        return posts.containsKey(title);
     }
 }

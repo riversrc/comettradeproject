@@ -1,10 +1,10 @@
 public class PostController
 {
-    private Post post = new Post();
-    public String currUser = "comettrade";
-    private boolean check;
+    private static Post post = new Post();
+    public static String currUser = "comettrade";
+    private static boolean check;
 
-    public String newPost(String title, double price, String description)
+    public static String newPost(String title, double price, String description)
     {
         User user = DBManager.getUser(currUser);
         if(user.hasPost(title))

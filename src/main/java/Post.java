@@ -1,26 +1,25 @@
 import java.lang.Math;
-import java.util.String;
 
 public class Post
 {
-    private double price;
-    private String title;
-    private String description;
+    private static double price;
+    private static String title;
+    private static String description;
     
     public Post()
     {
         
     }
     
-    public boolean createPost(String title, double price, String description)
+    public static boolean createPost(String t, double p, String d)
     {
-        if((price<1&&price>10000)||(fmod(price, 0.01))!=0||(title.length()>40&&title.length<1)||description.length()>300)
+        if((price<1&&price>10000)||(price%0.01)!=0||(title.length()>40&&title.length()<1)||description.length()>300)
         {
             return false;
         }
-        this.price = price;
-        this.title = title;
-        this.description = description;
+        price = p;
+        title = t;
+        description = d;
         return true;
     }
 

@@ -1,7 +1,7 @@
-pubilc class PostGUI
+public class PostGUI
 {
-    public String newPostStart(String title, double price, String description)
+    public static String newPostStart(String title, double price, String description)
     {
-        return PostController.newPost(String title, double price, String description);
+        return PostController.newPost(title, price, description);
     }
 }

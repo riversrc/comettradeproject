@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class DBManager
 {
-    private HashMap<String, User> users = new HashMap<>();
+    private static HashMap<String, User> users = new HashMap<>();
 
     public DBManager() {
         // pre-existing user for test cases
@@ -15,16 +15,16 @@ public class DBManager
         }
         return false;
     }
-    public void storeUser(User user){
+    public static void storeUser(User user){
         users.put(user.getUsername(), user);
     }
 
-    public void storePost(String name, Post post)
+    public static void storePost(String name, Post post)
     {
-        users.get(name).addPost(post);
+        users.get(name).addPost(name, post);
     }
 
-    public User getUser(String name)
+    public static User getUser(String name)
     {
         return users.get(name);
     }
