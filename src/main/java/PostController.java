@@ -1,7 +1,7 @@
 public class PostController
 {
     private Post post = new Post();
-    public String currUser = Main.currUser;
+    public String currUser = "comettrade";
     private boolean check;
 
     public String newPost(String title, double price, String description)

@@ -1,10 +1,7 @@
 pubilc class PostGUI
 {
-    public PostGUI(){
-        
-    }
-    public newPostStart(String title, double price, String description)
+    public String newPostStart(String title, double price, String description)
     {
-        System.out.println(PostController.newPost(String title, double price, String description));
+        return PostController.newPost(String title, double price, String description);
     }
 }
