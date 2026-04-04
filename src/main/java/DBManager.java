@@ -15,12 +15,17 @@ public class DBManager
         }
         return false;
     }
-    public User getUser(String username) {
-        return users.get(username);
+    public void storeUser(User user){
+        users.put(user.getUsername(), user);
     }
 
+    public void storePost(String name, Post post)
+    {
+        users.get(name).addPost(post);
+    }
 
-    public void storePost(String name){
-
+    public User getUser(String name)
+    {
+        return users.get(name);
     }
 }
