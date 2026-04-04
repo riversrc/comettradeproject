@@ -25,4 +25,8 @@ public class User {
     public Post getPost(String name){
         return posts.get(name);
     }
+
+    public boolean hasPost(String title){
+        posts.containsKey(title);
+    }
 }
