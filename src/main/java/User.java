@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.*;
 
 public class User {
     private String username;
@@ -24,6 +24,15 @@ public class User {
 
     public Post getPost(String name){
         return posts.get(name);
+    }
+    
+    public List<Post> getAllPosts(){
+        List<Post> allPosts = new ArrayList<Post>();
+        Set<String> postName = posts.keySet();
+        
+        for(String s : postName)
+            allPosts.add(posts.get(s));
+        return allPosts;
     }
 
     public boolean hasPost(String title){

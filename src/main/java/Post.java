@@ -2,6 +2,7 @@ import java.lang.Math;
 
 public class Post
 {
+    private static String owner;
     private static double price;
     private static String title;
     private static String description;
