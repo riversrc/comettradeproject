@@ -39,6 +39,7 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.SUCCESS;
         assert result.getItems().size() == 2;
         assert result.getItems().get(0).getTitle().contains("Laptop")
                 || result.getItems().get(1).getTitle().contains("Laptop");
@@ -50,6 +51,7 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.SUCCESS;
         assert result.getItems().size() == 1;
         assert result.getItems().get(0).getTitle().equals("Desk Chair");
     }
@@ -60,6 +62,7 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.SUCCESS;
         assert result.getItems().size() == 1;
         assert result.getItems().get(0).getTitle().equals("Calculus Book");
     }
@@ -70,6 +73,7 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.SUCCESS;
         assert result.getItems().size() == 2;
         assert result.getItems().get(0).getTitle().equals("Laptop");
         assert result.getItems().get(1).getTitle().equals("Gaming Laptop");
@@ -82,6 +86,7 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.SUCCESS;
         assert result.getItems().size() == 1;
         assert result.getItems().get(0).getTitle().equals("Laptop");
     }
@@ -92,8 +97,9 @@ public class SearchFilterItemsTest {
         );
 
         assert result.isSuccess();
+        assert result.getResultType() == SearchResult.ResultType.NO_RESULTS;
         assert result.getItems().isEmpty();
-        assert result.getMessage().equals("No results found");
+        assert result.getMessage().equals("No matching items found.");
     }
 
     private static void testInvalidSearchText(SearchFilterItemsUseCase useCase, List<Item> itemDatabase) {
@@ -102,7 +108,8 @@ public class SearchFilterItemsTest {
         );
 
         assert !result.isSuccess();
-        assert result.getMessage().equals("Error: invalid search text");
+        assert result.getResultType() == SearchResult.ResultType.INVALID_QUERY;
+        assert result.getMessage().equals("Error: Invalid search text. Must be 1–100 characters.");
     }
 
     private static void testInvalidCategory(SearchFilterItemsUseCase useCase, List<Item> itemDatabase) {
@@ -111,7 +118,8 @@ public class SearchFilterItemsTest {
         );
 
         assert !result.isSuccess();
-        assert result.getMessage().equals("Error: invalid category");
+        assert result.getResultType() == SearchResult.ResultType.INVALID_CATEGORY;
+        assert result.getMessage().equals("Error: Invalid category 'Vehicles'.");
     }
 
     private static void testInvalidPriceRange(SearchFilterItemsUseCase useCase, List<Item> itemDatabase) {
@@ -120,7 +128,8 @@ public class SearchFilterItemsTest {
         );
 
         assert !result.isSuccess();
-        assert result.getMessage().equals("Error: invalid price range");
+        assert result.getResultType() == SearchResult.ResultType.INVALID_PRICE;
+        assert result.getMessage().equals("Error: Invalid price range. MinPrice=500.0 MaxPrice=100.0");
     }
 
     private static void testDatabaseFailure(SearchFilterItemsUseCase useCase) {
@@ -129,6 +138,7 @@ public class SearchFilterItemsTest {
         );
 
         assert !result.isSuccess();
-        assert result.getMessage().equals("System error: database unavailable");
+        assert result.getResultType() == SearchResult.ResultType.SYSTEM_ERROR;
+        assert result.getMessage().equals("System error: Service unavailable. Please try again later.");
     }
 }
