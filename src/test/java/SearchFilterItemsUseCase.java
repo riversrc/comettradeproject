@@ -4,19 +4,15 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SearchFilterItemsUseCase {
-
     private static final List<String> VALID_CATEGORIES = Arrays.asList(
             "Electronics", "Furniture", "Books"
     );
-
     private static final List<String> VALID_CONDITIONS = Arrays.asList(
             "New", "Like New", "Good", "Fair"
     );
-
     private static final List<String> VALID_LOCATIONS = Arrays.asList(
             "UTD", "Dallas", "Richardson"
     );
-
     private static final List<String> VALID_SORT_OPTIONS = Arrays.asList(
             "PriceLowToHigh", "PriceHighToLow", "Newest"
     );
@@ -32,73 +28,60 @@ public class SearchFilterItemsUseCase {
             List<Item> itemDatabase
     ) {
         if (itemDatabase == null) {
-            return new SearchResult(false, "System error: database unavailable", new ArrayList<>());
+            return SearchResult.systemError();
         }
 
-        if (queryText == null) {
-            return new SearchResult(false, "Error: invalid search text", new ArrayList<>());
+        if (queryText == null || queryText.trim().isEmpty()) {
+            return SearchResult.invalidQuery();
         }
 
         String trimmedQuery = queryText.trim();
-        if (trimmedQuery.isEmpty()) {
-            return new SearchResult(false, "Error: invalid search text", new ArrayList<>());
-        }
 
         if (category != null && !VALID_CATEGORIES.contains(category)) {
-            return new SearchResult(false, "Error: invalid category", new ArrayList<>());
+            return SearchResult.invalidCategory(category);
         }
 
         if (condition != null && !VALID_CONDITIONS.contains(condition)) {
-            return new SearchResult(false, "Error: invalid condition", new ArrayList<>());
+            return SearchResult.invalidCondition(condition);
         }
 
         if (location != null && !VALID_LOCATIONS.contains(location)) {
-            return new SearchResult(false, "Error: invalid location", new ArrayList<>());
+            return SearchResult.invalidLocation(location);
         }
 
         if (sortBy != null && !VALID_SORT_OPTIONS.contains(sortBy)) {
-            return new SearchResult(false, "Error: invalid sort option", new ArrayList<>());
+            return SearchResult.invalidSortOption(sortBy);
         }
 
-        if (minPrice != null && minPrice < 0) {
-            return new SearchResult(false, "Error: invalid price range", new ArrayList<>());
-        }
-
-        if (maxPrice != null && maxPrice < 0) {
-            return new SearchResult(false, "Error: invalid price range", new ArrayList<>());
-        }
-
-        if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
-            return new SearchResult(false, "Error: invalid price range", new ArrayList<>());
+        if ((minPrice != null && minPrice < 0) ||
+            (maxPrice != null && maxPrice < 0) ||
+            (minPrice != null && maxPrice != null && minPrice > maxPrice)) {
+            return SearchResult.invalidPriceRange(
+                    minPrice != null ? minPrice : 0,
+                    maxPrice != null ? maxPrice : 0
+            );
         }
 
         List<Item> results = new ArrayList<>();
-
         for (Item item : itemDatabase) {
             if (!item.getTitle().toLowerCase().contains(trimmedQuery.toLowerCase())) {
                 continue;
             }
-
             if (category != null && !item.getCategory().equals(category)) {
                 continue;
             }
-
             if (minPrice != null && item.getPrice() < minPrice) {
                 continue;
             }
-
             if (maxPrice != null && item.getPrice() > maxPrice) {
                 continue;
             }
-
             if (condition != null && !item.getCondition().equals(condition)) {
                 continue;
             }
-
             if (location != null && !item.getLocation().equals(location)) {
                 continue;
             }
-
             results.add(item);
         }
 
@@ -113,9 +96,9 @@ public class SearchFilterItemsUseCase {
         }
 
         if (results.isEmpty()) {
-            return new SearchResult(true, "No results found", results);
+            return SearchResult.noResults();
         }
 
-        return new SearchResult(true, "Matching items found", results);
+        return SearchResult.success(results);
     }
 }
