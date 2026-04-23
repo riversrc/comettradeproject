@@ -10,10 +10,12 @@ public class DBManager
         users.put("comettrade", new User("comettrade", "12345678a%"));
         users.put("bob", new User("bob", "12345678a%"));
         users.put("fred", new User("fred", "12345678a%"));
-        createNewThread("12345", "54321", "thank you");
+        users.put("12345", new User("12345", "12345678a%"));
+        users.put("54321", new User("54321", "12345678a%"));
+        // createNewThread("12345", "54321", "thank you");
     }
 
-    public static boolean checkUserExist(String username) {
+    public boolean checkUserExist(String username) {
         if (users.containsKey(username)) {
             return true;
         }
@@ -47,7 +49,7 @@ public class DBManager
     
     public static void createNewThread(String currUser, String postOwner, String msg)
     {
-        List<String> thread = new ArrayList<String>();
+        List<String> thread = new ArrayList<>();
         thread.add(msg);
         threads.get(currUser).put(postOwner, thread);
         threads.get(postOwner).put(currUser, thread);

@@ -3,6 +3,8 @@ import java.util.*;
 public class MessageThreadController
 {
 
+    private static DBManager dbManager = new DBManager();
+
     //////////////////////////////////////
     // testing functions for test cases //
     //////////////////////////////////////
@@ -36,7 +38,7 @@ public class MessageThreadController
     }
 
     public static boolean checkUserExists(String userID) {
-        if (DBManager.checkUserExist(userID)) {
+        if (dbManager.checkUserExist(userID)) {
             return true;
         } else {
             return false;
@@ -69,13 +71,13 @@ public class MessageThreadController
         if(checkIDForBadCharacters(sendingUser)){
             return "Sending User ID has bad characters";
         }
-        if(checkUserExists(sendingUser)){
+        if(!checkUserExists(sendingUser)){
             return "Sending User ID doesn't exist";
         }
         if(checkIDForBadCharacters(receivingUser)){
             return "Receiving User ID has bad characters";
         }
-        if(checkUserExists(receivingUser)){
+        if(!checkUserExists(receivingUser)){
             return "Receiving User ID doesn't exist";
         }
         if(checkMsgTooLong(message)){
@@ -101,13 +103,13 @@ public class MessageThreadController
         if (checkMsgTooLong(message)) {
             return "Error: Character limit exceeded";
         }
-        if (checkUserExists(sendingUser)) {
+        if (!checkUserExists(sendingUser)) {
             return "Error: Invalid sendingUser (user not found)";
         }
         if (checkUserIDEmpty(receivingUser)) {
             return "Error: Exceptional receivingUser (null)";
         }
-        if(checkUserExists(receivingUser)){
+        if(!checkUserExists(receivingUser)){
             return "Error: Invalid receivingUser (user not found)";
         }
         if(checkMsgEmpty(message)){
