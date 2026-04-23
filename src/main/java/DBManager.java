@@ -8,6 +8,7 @@ public class DBManager
     public DBManager() {
         // pre-existing user for test cases
         users.put("comettrade", new User("comettrade", "12345678a%"));
+        createNewThread("12345", "54321", "thank you");
     }
 
     public boolean checkUserExist(String username) {

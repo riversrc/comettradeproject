@@ -2,7 +2,6 @@ import java.util.*;
 
 public class MessageThreadGUI
 {
-    private static String currUser = "comettrade";
     private static String postOwner;
     
     public MessageThreadGUI(String owner)
