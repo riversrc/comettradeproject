@@ -8,6 +8,8 @@ public class DBManager
     public DBManager() {
         // pre-existing user for test cases
         users.put("comettrade", new User("comettrade", "12345678a%"));
+        users.put("bob", new User("bob", "12345678a%"));
+        users.put("fred", new User("fred", "12345678a%"));
         createNewThread("12345", "54321", "thank you");
     }
 

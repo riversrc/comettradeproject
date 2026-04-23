@@ -8,37 +8,37 @@ class Message_Create_Testing {
     @Test
     void login_TC1() {
         // message thread successfully created
-        assertEquals(MessageThreadGUI.newMessageStart("comettrade", "12345678a%"), "Login successful");
+        assertEquals(MessageThreadGUI.newMessageStart("bob", "fred", "thank you"), "New message thread started");
     }
     @Test
     void login_TC2() {
         // message is empty
-        assertEquals(MessageThreadGUI.newMessageStart("comettrade", "123456789101112a%"), "Password does not match length requirement");
+        assertEquals(MessageThreadGUI.newMessageStart("bob", "fred", ""), "Message is empty");
     }
     @Test
     void login_TC3() {
         // message is too long
-        assertEquals(MessageThreadGUI.newMessageStart("comettrade", "123456 78a%"), "Password contains invalid characters");
+        assertEquals(MessageThreadGUI.newMessageStart("bob", "fred", "asdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdfasdasdasdff"), "Message too long");
     }
     @Test
     void login_TC4() {
         // recieving user doesn't exist
-        assertEquals(MessageThreadGUI.newMessageStart("comettraderr", "12345678a%"), "Username does not exist");
+        assertEquals(MessageThreadGUI.newMessageStart("bob", "doesnotexist", "thank you"), "Receiving User ID doesn't exist");
     }
     @Test
     void login_TC7() {
         // whitespace or special characters used in recieving user id
-        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
+        assertEquals(MessageThreadGUI.newMessageStart("bob", "1$% as", "thank you"), "Receiving User ID has bad characters");
     }
     @Test
     void login_TC10() {
         // sending user id doesn't exist
-        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
+        assertEquals(MessageThreadGUI.newMessageStart("doesnotexist", "fred", "thank you"), "Sending User ID doesn't exist");
     }
     @Test
     void login_TC19() {
         // sending user id has whitespace or special characters
-        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
+        assertEquals(MessageThreadGUI.newMessageStart("1$% as", "fred", "thank you"), "Sending User ID has bad characters");
     }
 
 
