@@ -15,8 +15,8 @@ public class MessageThreadGUI
         return MessageThreadController.getMessages(currUser, owner);
     }
     
-    public static String newMessageStart(String currUser, String owner, String description)
+    public static String newMessageStart(String title, String currUser, String owner, String description)
     {
-        return MessageThreadController.accessThread(currUser, owner, description);
+        return MessageThreadController.accessThread(title, currUser, owner, description);
     }
 }

@@ -22,6 +22,10 @@ public class User {
         posts.put(name, post);
     }
 
+    public boolean checkPost(String title){
+        return posts.containsKey(title);
+    }
+
     public Post getPost(String name){
         return posts.get(name);
     }
