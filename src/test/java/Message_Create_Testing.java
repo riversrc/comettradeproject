@@ -13,22 +13,32 @@ class Message_Create_Testing {
     @Test
     void login_TC2() {
         // message is empty
-        assertEquals(LoginGUI.login("comettrade", "123456789101112a%"), "Password does not match length requirement");
+        assertEquals(MessageThreadGUI.newMessageStart("comettrade", "123456789101112a%"), "Password does not match length requirement");
     }
     @Test
     void login_TC3() {
-        // string with only white space
-        assertEquals(LoginGUI.login("comettrade", "123456 78a%"), "Password contains invalid characters");
+        // message is too long
+        assertEquals(MessageThreadGUI.newMessageStart("comettrade", "123456 78a%"), "Password contains invalid characters");
     }
     @Test
     void login_TC4() {
-        // listing id includes non numeric values
-        assertEquals(LoginGUI.login("comettraderr", "12345678a%"), "Username does not exist");
+        // recieving user doesn't exist
+        assertEquals(MessageThreadGUI.newMessageStart("comettraderr", "12345678a%"), "Username does not exist");
     }
     @Test
-    void login_TC5() {
-        // listing has been deleted
-        assertEquals(LoginGUI.login("comet trade", "12345678a%"), "Username contains invalid characters");
+    void login_TC7() {
+        // whitespace or special characters used in recieving user id
+        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
+    }
+    @Test
+    void login_TC10() {
+        // sending user id doesn't exist
+        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
+    }
+    @Test
+    void login_TC19() {
+        // sending user id has whitespace or special characters
+        assertEquals(MessageThreadGUI.newMessageStart("comet trade", "12345678a%"), "Username contains invalid characters");
     }
 
 

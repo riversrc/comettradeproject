@@ -2,9 +2,89 @@ import java.util.*;
 
 public class MessageThreadController
 {
+
+    //////////////////////////////////////
+    // testing functions for test cases //
+    //////////////////////////////////////
+    public static char[] badChars = {' ', ',', '/', '\\', ' '};
+
+    public static boolean checkIDForBadCharacters(String userID) {
+        // check if username has non-valid characters
+        for(char c : badChars){
+            if(userID.indexOf(c) >= 0){
+                return true;
+            }
+        }
+
+        // check for control characters in username
+        for(char c : userID.toCharArray()){
+            if( Character.isISOControl(c)){
+
+                return true;
+            }
+        }
+        // returns false if there are no bad characters
+        return false;
+    }
+
+    public static boolean checkUserIDEmpty(String userID) {
+        if(userID.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkUserExists(String userID) {
+        if (DBManager.checkUserExist(userID)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkMsgTooLong(String message) {
+        if (message.length() > 100) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkMsgEmpty(String message) {
+        if (message.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    ///////////////////////
+    // message functions //
+    ///////////////////////
     public static String accessThread(String sendingUser, String receivingUser, String message)
     {
-        User postOwner = DBManager.getUser(receivingUser);
+
+        if(checkIDForBadCharacters(sendingUser)){
+            return "Sending User ID has bad characters";
+        }
+        if(checkUserExists(sendingUser)){
+            return "Sending User ID doesn't exist";
+        }
+        if(checkIDForBadCharacters(receivingUser)){
+            return "Receiving User ID has bad characters";
+        }
+        if(checkUserExists(receivingUser)){
+            return "Receiving User ID doesn't exist";
+        }
+        if(checkMsgTooLong(message)){
+            return "Message too long";
+        }
+        if(checkMsgEmpty(message)){
+            return "Message is empty";
+        }
+
         if(!threadStatus(sendingUser, receivingUser)){
             DBManager.createNewThread(sendingUser, receivingUser, message);
             return "New message thread started";
@@ -14,6 +94,25 @@ public class MessageThreadController
     }
 
     public static String replyMessage(String sendingUser, String receivingUser, String message) {
+
+        if (checkUserIDEmpty(sendingUser)) {
+            return "Sending User ID is empty";
+        }
+        if (checkMsgTooLong(message)) {
+            return "Message too long";
+        }
+        if (checkUserExists(sendingUser)) {
+            return "Sending User ID doesn't exist";
+        }
+        if (checkUserIDEmpty(receivingUser)) {
+            return "Receiving User ID is empty";
+        }
+        if(checkUserExists(receivingUser)){
+            return "Receiving User ID doesn't exist";
+        }
+        if(checkMsgEmpty(message)){
+            return "Message is empty";
+        }
         if (!DBManager.checkThreadStatus(sendingUser, receivingUser)) {
             return "Thread not found";
         }

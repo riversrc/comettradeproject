@@ -11,7 +11,7 @@ public class DBManager
         createNewThread("12345", "54321", "thank you");
     }
 
-    public boolean checkUserExist(String username) {
+    public static boolean checkUserExist(String username) {
         if (users.containsKey(username)) {
             return true;
         }
