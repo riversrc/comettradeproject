@@ -7,6 +7,5 @@ public class LogoutGUI {
 
         // redirect to login after cameron is done with it something like this:
         LoginGUI loginGUI = new LoginGUI();
-        loginGUI.show();
     }
 }

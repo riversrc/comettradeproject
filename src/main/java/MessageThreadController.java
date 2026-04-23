@@ -96,22 +96,22 @@ public class MessageThreadController
     public static String replyMessage(String sendingUser, String receivingUser, String message) {
 
         if (checkUserIDEmpty(sendingUser)) {
-            return "Sending User ID is empty";
+            return "Error: Exceptional sendingUser (null)";
         }
         if (checkMsgTooLong(message)) {
-            return "Message too long";
+            return "Error: Character limit exceeded";
         }
         if (checkUserExists(sendingUser)) {
-            return "Sending User ID doesn't exist";
+            return "Error: Invalid sendingUser (user not found)";
         }
         if (checkUserIDEmpty(receivingUser)) {
-            return "Receiving User ID is empty";
+            return "Error: Exceptional receivingUser (null)";
         }
         if(checkUserExists(receivingUser)){
-            return "Receiving User ID doesn't exist";
+            return "Error: Invalid receivingUser (user not found)";
         }
         if(checkMsgEmpty(message)){
-            return "Message is empty";
+            return "Error: Invalid message (empty message)";
         }
         if (!DBManager.checkThreadStatus(sendingUser, receivingUser)) {
             return "Thread not found";
