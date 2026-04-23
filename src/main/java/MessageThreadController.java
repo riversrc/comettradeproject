@@ -2,29 +2,32 @@ import java.util.*;
 
 public class MessageThreadController
 {
-    public static String accessThread(String post, String currUser, String owner, String message)
+    public static String accessThread(String sendingUser, String receivingUser, String message)
     {
-        User postOwner = DBManager.getUser(owner);
-        if(!postOwner.checkPost(post)){
-            return "Invalid post, message request denied";
-        }
-        if(!threadStatus(currUser, owner)){
-            DBManager.createNewThread(currUser, owner, message);
+        User postOwner = DBManager.getUser(receivingUser);
+        if(!threadStatus(sendingUser, receivingUser)){
+            DBManager.createNewThread(sendingUser, receivingUser, message);
             return "New message thread started";
         }
-        DBManager.storeNewMessage(currUser, owner, message);
+        DBManager.storeNewMessage(sendingUser, receivingUser, message);
         return "Message sent";
     }
 
+    public static String replyMessage(String sendingUser, String receivingUser, String message) {
+        if (!DBManager.checkThreadStatus(sendingUser, receivingUser)) {
+            return "Thread not found";
+        }
+        DBManager.storeNewMessage(sendingUser, receivingUser, message);
+        return "Message sent successfully";
+    }
 
-
-    public static List<String> getMessages(String currUser, String postOwner)
+    public static List<String> getMessages(String sendingUser, String receivingUser)
     {
-        return DBManager.getThread(currUser, postOwner);
+        return DBManager.getThread(sendingUser, receivingUser);
     }
     
-    private static boolean threadStatus(String currUser, String postOwner)
+    private static boolean threadStatus(String sendingUser, String receivingUser)
     {
-        return DBManager.checkThreadStatus(currUser, postOwner);
+        return DBManager.checkThreadStatus(sendingUser, receivingUser);
     }
 }

@@ -10,13 +10,17 @@ public class MessageThreadGUI
         postOwner = owner;
     }
 
-    public static List<String> allMessages(String currUser, String owner)
+    public static List<String> allMessages(String sendingUser, String receivingUser)
     {
-        return MessageThreadController.getMessages(currUser, owner);
+        return MessageThreadController.getMessages(sendingUser, receivingUser);
     }
     
-    public static String newMessageStart(String title, String currUser, String owner, String description)
+    public static String newMessageStart(String sendingUser, String receivingUser, String message)
     {
-        return MessageThreadController.accessThread(title, currUser, owner, description);
+        return MessageThreadController.accessThread(sendingUser, receivingUser, message);
+    }
+
+    public static String replyMessage(String sendingUser, String receivingUser, String message) {
+        return MessageThreadController.replyMessage(sendingUser, receivingUser, message);
     }
 }
