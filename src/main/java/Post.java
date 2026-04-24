@@ -12,15 +12,15 @@ public class Post
         
     }
     
-    public static boolean createPost(String t, double p, String d)
+    public boolean createPost(String t, double p, String d)
     {
-        if((price<1&&price>10000)||(price%0.01)!=0||(title.length()>40&&title.length()<1)||description.length()>300)
-        {
-            return false;
-        }
         price = p;
         title = t;
         description = d;
+        if(( (price<1) || (price>10000) ) || (Math.round(price * 100.0) != price * 100.0) ||(title.length()>40 || title.isEmpty()) || description.length()>300)
+        {
+            return false;
+        }
         return true;
     }
 

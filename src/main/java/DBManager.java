@@ -5,16 +5,17 @@ public class DBManager
     private static HashMap<String, User> users = new HashMap<>();
     private static HashMap<String, HashMap<String, List<String>>> threads = new HashMap<>();
 
-    public DBManager() {
-        // pre-existing user for test cases
+    static {
         users.put("comettrade", new User("comettrade", "12345678a%"));
         users.put("bob", new User("bob", "12345678a%"));
         users.put("fred", new User("fred", "12345678a%"));
         users.put("12345", new User("12345", "12345678a%"));
         users.put("54321", new User("54321", "12345678a%"));
+
         for (String name : users.keySet()) {
             threads.put(name, new HashMap<>());
         }
+
         createNewThread("12345", "54321", "thank you");
     }
 
