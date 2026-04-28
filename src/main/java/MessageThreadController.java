@@ -3,7 +3,7 @@ import java.util.*;
 public class MessageThreadController
 {
 
-    private static DBManager dbManager = new DBManager();
+
 
     //////////////////////////////////////
     // testing functions for test cases //
@@ -38,7 +38,7 @@ public class MessageThreadController
     }
 
     public static boolean checkUserExists(String userID) {
-        if (dbManager.checkUserExist(userID)) {
+        if (DBManager.checkUserExist(userID)) {
             return true;
         } else {
             return false;

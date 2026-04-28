@@ -40,6 +40,10 @@ public class User {
     }
 
     public boolean hasPost(String title){
+        for(String p:posts.keySet()){
+            System.out.println(p);
+        }
+        System.out.println(posts.containsKey(title));
         return posts.containsKey(title);
     }
 }

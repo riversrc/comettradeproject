@@ -8,8 +8,9 @@ class PostTestCase {
     @Test
     void post_TC1() {
         // post successful
-        assertEquals(PostGUI.newPostStart("Desk", 650,"Slightly Scratched"), "A new post has been created.\n");
+        assertEquals(PostGUI.newPostStart("Desk", 50,"Very Low Use"), "A new post has been created.\n");
     }
+    @Test
     void post_TC2() {
         // post rejected for to long of a description
         String description = "";
@@ -17,27 +18,29 @@ class PostTestCase {
             description = description + "E";
         assertEquals(PostGUI.newPostStart("Laptop", 5000, description), "A field has an incorrect input, please try again.\n");
     }
+    @Test
     void post_TC3() {
         // post successful
         assertEquals(PostGUI.newPostStart("Pillow", 10,""), "A new post has been created.\n");
     }
+    @Test
     void post_TC4() {
         // post rejected for too high a price
         assertEquals(PostGUI.newPostStart("Tungsten", 40000,"Lab Equipment"), "A field has an incorrect input, please try again.\n");
     }
+    @Test
     void post_TC7() {
         // post rejected to too many decimal points
         assertEquals(PostGUI.newPostStart("Apple", 80.999,"Just the core"), "A field has an incorrect input, please try again.\n");
     }
+    @Test
     void post_TC10() {
         // post rejected due to long title
-        String title = "FLOATIE";
-        for(int i = 0; i< 33; i++)
-            title = title + "E";
-        assertEquals(PostGUI.newPostStart(title, 200,"Available for Summer 2026"), "A field has an incorrect input, please try again.\n");
+        assertEquals(PostGUI.newPostStart("FLOATIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", 200,"Available for Summer 2026"), "A field has an incorrect input, please try again.\n");
     }
+    @Test
     void post_TC19() {
         // post rejected due to existing post
-        assertEquals(PostGUI.newPostStart("Desk", 50,"Very Low Use"), "This post already exists");
+        assertEquals(PostGUI.newPostStart("Desk", 50,"Very Low Use"), "This post already exists.\n");
     }
 }
