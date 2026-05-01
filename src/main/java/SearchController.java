@@ -1,34 +1,57 @@
 import java.util.*;
 
-public class SearchController
-{
-    /**
-     * Searches all posts in DBManager for ones whose title
-     * contains the query string, then returns their titles in a new String[].
-     *
-     * @param query  the search string typed by the user
-     * @return       String[] of matching post titles, empty array if none found
-     */
-    public static String[] search(String query)
-    {
-        if (query == null || query.isBlank())
-            return new String[0];
+public class SearchController {
 
-        List<String> results = new ArrayList<String>();
+    // validation helpers (mirroring your style)
+    public static boolean checkSearchEmpty(String query) {
+        return query.isEmpty();
+    }
+
+    public static boolean checkSearchTooLong(String query) {
+        return query.length() > 100;
+    }
+
+    public static boolean checkBadCharacters(String query) {
+        char[] badChars = {'/', '\\'};
+        for (char c : badChars) {
+            if (query.indexOf(c) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // main search function
+    public static Object searchPosts(String query) {
+
+        if (checkSearchEmpty(query)) {
+            return "Error: Search query is empty";
+        }
+
+        if (checkSearchTooLong(query)) {
+            return "Error: Search query too long";
+        }
+
+        if (checkBadCharacters(query)) {
+            return "Error: Search query has invalid characters";
+        }
 
         Iterator<Post> allPosts = DBManager.getAllPosts();
+        List<Post> results = new ArrayList<>();
 
-        while (allPosts.hasNext())
-        {
-            Post post = allPosts.next();
+        while (allPosts.hasNext()) {
+            Post p = allPosts.next();
 
-            if (post.getName() != null &&
-                post.getName().toLowerCase().contains(query.toLowerCase()))
-            {
-                results.add(post.getName());
+            // assuming Post has getContent()
+            if (p.getName().toLowerCase().contains(query.toLowerCase())) {
+                results.add(p);
             }
         }
 
-        return results.toArray(new String[0]);
+        if (results.isEmpty()) {
+            return "No results found";
+        }
+
+        return results;
     }
 }
