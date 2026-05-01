@@ -8,19 +8,19 @@ class SearchBar_Testing {
     @Test
     void searchBar_TC1() {
         // null input is invalid
-        assertEquals(false, SearchBar.isValidInput(null));
+        assertFalse(SearchBar.isValidInput(null));
     }
 
     @Test
     void searchBar_TC2() {
         // empty string is invalid
-        assertEquals(false, SearchBar.isValidInput(""));
+        assertFalse(SearchBar.isValidInput(""));
     }
 
     @Test
     void searchBar_TC3() {
         // whitespace-only string is invalid
-        assertEquals(false, SearchBar.isValidInput("     "));
+        assertFalse(SearchBar.isValidInput("     "));
     }
 
     // ─── isValidInput: Length Boundaries ─────────────────────────────────────
@@ -28,19 +28,19 @@ class SearchBar_Testing {
     @Test
     void searchBar_TC4() {
         // single character is valid (lower boundary)
-        assertEquals(true, SearchBar.isValidInput("a"));
+        assertTrue(SearchBar.isValidInput("a"));
     }
 
     @Test
     void searchBar_TC5() {
         // exactly 100 characters is valid (upper boundary)
-        assertEquals(true, SearchBar.isValidInput("a".repeat(100)));
+        assertTrue(SearchBar.isValidInput("a".repeat(100)));
     }
 
     @Test
     void searchBar_TC6() {
         // 101 characters is invalid (exceeds upper boundary)
-        assertEquals(false, SearchBar.isValidInput("a".repeat(101)));
+        assertFalse(SearchBar.isValidInput("a".repeat(101)));
     }
 
     // ─── isValidInput: Allowed Characters ────────────────────────────────────
@@ -48,37 +48,37 @@ class SearchBar_Testing {
     @Test
     void searchBar_TC7() {
         // letters only are valid
-        assertEquals(true, SearchBar.isValidInput("LaptopReview"));
+        assertTrue(SearchBar.isValidInput("LaptopReview"));
     }
 
     @Test
     void searchBar_TC8() {
         // letters, numbers, spaces, underscore, and period are all valid
-        assertEquals(true, SearchBar.isValidInput("laptop_review 2024."));
+        assertTrue(SearchBar.isValidInput("laptop_review 2024."));
     }
 
     @Test
     void searchBar_TC9() {
         // special character @ is invalid
-        assertEquals(false, SearchBar.isValidInput("laptop@review"));
+        assertFalse(SearchBar.isValidInput("laptop@review"));
     }
 
     @Test
     void searchBar_TC10() {
         // special character ! is invalid
-        assertEquals(false, SearchBar.isValidInput("!laptop"));
+        assertFalse(SearchBar.isValidInput("!laptop"));
     }
 
     @Test
     void searchBar_TC11() {
         // hashtag character is invalid
-        assertEquals(false, SearchBar.isValidInput("laptop#review"));
+        assertFalse(SearchBar.isValidInput("laptop#review"));
     }
 
     @Test
     void searchBar_TC12() {
         // hyphen is invalid (not in allowed set)
-        assertEquals(false, SearchBar.isValidInput("laptop-review"));
+        assertFalse(SearchBar.isValidInput("laptop-review"));
     }
 
     // ─── submitSearch: Invalid Input Guard ───────────────────────────────────
