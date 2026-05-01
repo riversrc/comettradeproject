@@ -88,10 +88,10 @@ public class MessageThreadController
         }
 
         if(!threadStatus(sendingUser, receivingUser)){
-            DBManager.createNewThread(sendingUser, receivingUser, message);
+            DBManager.createMessageThread(sendingUser, receivingUser, message);
             return "New message thread started";
         }
-        DBManager.storeNewMessage(sendingUser, receivingUser, message);
+        DBManager.appendMessage(sendingUser, receivingUser, message);
         return "Message sent";
     }
 
@@ -115,20 +115,20 @@ public class MessageThreadController
         if(checkMsgEmpty(message)){
             return "Error: Invalid message (empty message)";
         }
-        if (!DBManager.checkThreadStatus(sendingUser, receivingUser)) {
+        if (!DBManager.checkMessageThread(sendingUser, receivingUser)) {
             return "Thread not found";
         }
-        DBManager.storeNewMessage(sendingUser, receivingUser, message);
+        DBManager.appendMessage(sendingUser, receivingUser, message);
         return "Message sent successfully";
     }
 
     public static List<String> getMessages(String sendingUser, String receivingUser)
     {
-        return DBManager.getThread(sendingUser, receivingUser);
+        return DBManager.getMessages(sendingUser, receivingUser);
     }
     
     private static boolean threadStatus(String sendingUser, String receivingUser)
     {
-        return DBManager.checkThreadStatus(sendingUser, receivingUser);
+        return DBManager.checkMessageThread(sendingUser, receivingUser);
     }
 }

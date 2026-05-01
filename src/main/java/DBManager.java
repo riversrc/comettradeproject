@@ -6,8 +6,12 @@ public class DBManager {
     private static HashMap<String, User> users = new HashMap<>();
     private static HashMap<String, HashMap<String, List<String>>> threads = new HashMap<>();
 
+    // NEW: messages map
+    private static HashMap<String, List<String>> messages = new HashMap<>();
+
     private static final String USERS_FILE = "src/main/users.csv";
     private static final String POSTS_FILE = "src/main/posts.csv";
+    private static final String MESSAGES_FILE = "src/main/messages.csv";
 
     // ================= STARTUP =================
     static {
@@ -15,6 +19,7 @@ public class DBManager {
         ensureFilesExist();
         loadUsersFromCSV();
         loadPostsFromCSV();
+        loadMessagesFromCSV();
 
         for (String name : users.keySet()) {
             threads.put(name, new HashMap<>());
@@ -30,6 +35,9 @@ public class DBManager {
             File postsFile = new File(POSTS_FILE);
             if (!postsFile.exists()) postsFile.createNewFile();
 
+            File messagesFile = new File(MESSAGES_FILE);
+            if (!messagesFile.exists()) messagesFile.createNewFile();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,8 +45,6 @@ public class DBManager {
 
     // ================= LOAD USERS =================
     private static void loadUsersFromCSV() {
-        System.out.println("Loading users from CSV...");
-
         try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
 
@@ -50,7 +56,6 @@ public class DBManager {
                 String password = data[1];
 
                 users.put(username, new User(username, password));
-                System.out.println(username + " " + password);
             }
 
         } catch (IOException e) {
@@ -75,13 +80,49 @@ public class DBManager {
                 if (users.containsKey(username)) {
                     Post post = new Post();
                     post.createPost(title, price, description);
-
                     users.get(username).addPost(title, post);
                 }
             }
 
         } catch (IOException e) {
             System.out.println("No posts loaded.");
+        }
+    }
+
+    // ================= MESSAGE KEY =================
+    private static String getKey(String user1, String user2) {
+        return (user1.compareTo(user2) < 0)
+                ? user1 + "|" + user2
+                : user2 + "|" + user1;
+    }
+
+    // ================= LOAD MESSAGES =================
+    private static void loadMessagesFromCSV() {
+        try (BufferedReader br = new BufferedReader(new FileReader(MESSAGES_FILE))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",", 2);
+                if (data.length < 2) continue;
+
+                String key = data[0];
+                String msg = data[1];
+
+                messages.putIfAbsent(key, new ArrayList<>());
+                messages.get(key).add(msg);
+            }
+
+        } catch (IOException e) {
+            System.out.println("No messages loaded.");
+        }
+    }
+
+    // ================= SAVE ONE MESSAGE =================
+    private static void appendMessageToCSV(String key, String msg) {
+        try (FileWriter fw = new FileWriter(MESSAGES_FILE, true)) {
+            fw.write(key + "," + msg.replace(",", " ") + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -135,25 +176,38 @@ public class DBManager {
         return listing.iterator();
     }
 
-    // ================= THREADS =================
-    public static boolean checkThreadStatus(String currUser, String postOwner) {
-        return threads.get(currUser).containsKey(postOwner);
+    // ================= MESSAGE METHODS =================
+
+    public static boolean checkMessageThread(String user1, String user2) {
+        return messages.containsKey(getKey(user1, user2));
     }
 
-    public static List<String> getThread(String currUser, String postOwner) {
-        return threads.get(currUser).get(postOwner);
+    public static List<String> getMessages(String user1, String user2) {
+        return messages.get(getKey(user1, user2));
     }
 
-    public static void createNewThread(String currUser, String postOwner, String msg) {
+    public static void createMessageThread(String user1, String user2, String msg) {
+        String key = getKey(user1, user2);
+
         List<String> thread = new ArrayList<>();
-        thread.add(msg);
+        String formatted = user1 + ": " + msg;
 
-        threads.get(currUser).put(postOwner, thread);
-        threads.get(postOwner).put(currUser, thread);
+        thread.add(formatted);
+        messages.put(key, thread);
+
+        appendMessageToCSV(key, formatted);
     }
 
-    public static void storeNewMessage(String currUser, String postOwner, String msg) {
-        threads.get(currUser).get(postOwner).add(msg);
-        threads.get(postOwner).get(currUser).add(msg);
+    public static void appendMessage(String user1, String user2, String msg) {
+        String key = getKey(user1, user2);
+        String formatted = user1 + ": " + msg;
+
+        if (!messages.containsKey(key)) {
+            createMessageThread(user1, user2, msg);
+            return;
+        }
+
+        messages.get(key).add(formatted);
+        appendMessageToCSV(key, formatted);
     }
 }
