@@ -24,4 +24,35 @@ public class AuthController {
         }
         return false;
     }
+
+    public String signup(String username, String password) {
+
+        // username validation
+        if (username == null || username.isEmpty()) {
+            return "Error: Exceptional username (empty)";
+        }
+
+        if (username.contains(" ") || username.contains("/") || username.contains("\\")) {
+            return "Error: Username has bad characters";
+        }
+
+        if (checkUserExist(username)) {
+            return "Error: Username already exists";
+        }
+
+        // password validation
+        if (password == null || password.isEmpty()) {
+            return "Error: Exceptional password (null)";
+        }
+
+        if (password.length() < 8 || password.length() > 24) {
+            return "Error: Password must be 8-24 characters";
+        }
+
+        // store user
+        User newUser = new User(username, password);
+        DBManager.storeUser(newUser);
+
+        return "User created successfully";
+    }
 }
