@@ -8,7 +8,7 @@ class Search_Testing {
     @Test
     void search_TC1() {
         // valid search
-        Object result = SearchGUI.search("thank");
+        Object result = SearchGUI.search("Desk");
 
         assertTrue(result instanceof List);
     }
